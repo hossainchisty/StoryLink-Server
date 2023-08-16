@@ -14,7 +14,11 @@ const protect = asyncHandler(async (req, res, next) => {
   }
 
   // If token not found in cookies, check in Authorization header
-  if (!token && req.headers.authorization && req.headers.authorization.startsWith("Bearer")) {
+  if (
+    !token &&
+    req.headers.authorization &&
+    req.headers.authorization.startsWith("Bearer")
+  ) {
     token = req.headers.authorization.split(" ")[1];
   }
 
@@ -49,4 +53,3 @@ const protect = asyncHandler(async (req, res, next) => {
 });
 
 module.exports = { protect };
-

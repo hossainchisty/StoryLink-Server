@@ -3,7 +3,6 @@ const asyncHandler = require("express-async-handler");
 const User = require("../models/userModel");
 const Post = require("../models/postModel");
 
-
 /**
  * @desc  Get posts for a given user request
  * @route   /api/v1/posts/
@@ -75,10 +74,7 @@ const getPostByID = asyncHandler(async (req, res) => {
 const addPost = asyncHandler(async (req, res) => {
   try {
     // Destructure request body
-    const {
-      title,
-      description,
-    } = req.body;
+    const { title, description } = req.body;
 
     // Check for required title field
     if (!title) {
@@ -200,12 +196,10 @@ const deletePost = asyncHandler(async (req, res) => {
   } catch (error) {
     res.status(500).json({
       status: 500,
-      error: error.message
+      error: error.message,
     });
   }
 });
-
-
 
 module.exports = {
   getPosts,

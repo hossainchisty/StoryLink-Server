@@ -108,7 +108,6 @@ const registerUser = asyncHandler(async (req, res) => {
   }
 });
 
-
 /**
  * @desc    Authenticate a user
  * @route   /api/v1/users/login
@@ -123,8 +122,8 @@ const loginUser = asyncHandler(async (req, res) => {
   if (!user) {
     res.status(404).json({
       status: 404,
-      error: '404 Not Found',
-      message: 'User not found'
+      error: "404 Not Found",
+      message: "User not found",
     });
   }
   if (user && (await bcrypt.compare(password, user.password))) {
@@ -156,7 +155,7 @@ const loginUser = asyncHandler(async (req, res) => {
 
 const logoutUser = asyncHandler(async (req, res) => {
   // Update the user's token to invalidate it
-  res.cookie('token', null).res.status(200).json({
+  res.cookie("token", null).res.status(200).json({
     status: 200,
     message: "Logged out successfully",
   });
