@@ -131,6 +131,8 @@ const loginUser = asyncHandler(async (req, res) => {
     // Generate and set the token as a cookie
     const token = generateToken(user._id, user.full_name);
     res.status(200).cookie("token", token).json({
+      id: user._id,
+      full_name: user.full_name,
       status: 200,
       message: "Logged in successfully",
     });
