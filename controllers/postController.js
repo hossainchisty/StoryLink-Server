@@ -1,11 +1,26 @@
 // Basic Lib Imports
 const asyncHandler = require("express-async-handler");
+const jwt = require('jsonwebtoken');
 const User = require("../models/userModel");
 const Post = require("../models/postModel");
+const multer = require('multer');
+const fs = require('fs');
+
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, 'uploads/'); 
+  },
+  filename: (req, file, cb) => {
+    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
+    cb(null, file.fieldname + '-' + uniqueSuffix);
+  },
+});
+
+const upload = multer({ storage: storage }).single('image'); // Use single() for a single file
 
 /**
  * @desc  Get posts for a given user request
- * @route   /api/v1/posts/
+ * @route   /api/v1/posts/list
  * @method  GET
  * @access  Private
  */
@@ -29,7 +44,10 @@ const getPosts = asyncHandler(async (req, res) => {
  */
 
 const getPostsList = asyncHandler(async (req, res) => {
-  const posts = await Post.find().sort({ createdAt: -1 });
+  const posts = await Post.find()
+    .populate('author', ['full_name'])
+    .sort({ createdAt: -1 })
+    .limit(20)
   res.status(200).json({
     status: 200,
     data: {
@@ -47,7 +65,10 @@ const getPostsList = asyncHandler(async (req, res) => {
  */
 
 const getPostByID = asyncHandler(async (req, res) => {
-  const post = await Post.findById(req.params.postID).lean();
+  const {id} = req.params;
+  const post = await Post.findById(id)
+  .populate('author', ['full_name'])
+  .lean();
 
   if (!post) {
     return res.status(404).json({
@@ -71,40 +92,59 @@ const getPostByID = asyncHandler(async (req, res) => {
  * @returns {object} Newly added post in json format
  */
 
+// TODO: improve the scalability and readability 
 const addPost = asyncHandler(async (req, res) => {
-  try {
-    // Destructure request body
-    const { title, description } = req.body;
+  upload(req, res, async (err) => {
+    const { originalname, path } = req.file;
+    const parts = originalname.split('.');
+    const ext = parts[parts.length - 1];
+    const newPath = path+'.'+ ext;
+    fs.renameSync(path, newPath);
 
-    // Check for required title field
-    if (!title) {
+    if (err) {
       return res.status(400).json({
         status: 400,
-        message: "Validation error",
-        errors: [
-          {
-            field: "title",
-            message: "Title field is required",
-          },
-        ],
+        message: 'File upload error',
       });
     }
 
-    // Create a new task
-    const taskData = {
-      user: req.user.id,
-      title,
-      description,
-    };
+    try {
+      const { title, content } = req.body;
 
-    const task = await Post.create(taskData);
-    res.status(200).json(task);
-  } catch (error) {
-    res.status(500).json({
-      status: 500,
-      message: error.message,
-    });
-  }
+
+      // Decode token from cookies
+      const { token } = req.cookies;
+      jwt.verify(token, process.env.JWT_SECRET, {}, async (error, userData) => {
+        if (error) {
+          throw new error
+        }
+        const postData = {
+          author: userData.id,
+          title,
+          content,
+          cover: newPath,
+        };
+
+        const post = await Post.create(postData);
+        res.status(201).json(
+          {
+            status: 201,
+            data: post,
+            message: "Post created successfully",
+          }
+        );
+      });
+
+
+
+
+    } catch (error) {
+      res.status(500).json({
+        status: 500,
+        message: error.message,
+      });
+    }
+  });
 });
 
 /**
