@@ -14,6 +14,8 @@ connectDB(); // Establishing the database connection
 
 
 const app = express(); // Creating an instance of the Express application
+app.use('/uploads', express.static(__dirname + '/uploads')); // Serve uploaded files from the 'uploads' folder
+
 app.use(helmet()); // Setting up Helmet middleware for securing HTTP headers
 app.use(bodyParser.json()); // Parsing JSON bodies
 app.use(cookieParser()); // Parsing cookies
