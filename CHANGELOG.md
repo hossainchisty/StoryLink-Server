@@ -1,3 +1,12 @@
+## [0.3.1](https://github.com/hossainchisty/StoryLink-Server/compare/v0.3.0...v0.3.1) (2023-08-18)
+
+
+### Bug Fixes
+
+* Unhandled Promise Rejection in Update Post Route ([272e5b7](https://github.com/hossainchisty/StoryLink-Server/commit/272e5b7e88b7284f2afd7757fec9b52f30993ffa))
+
+
+
 # [0.3.0](https://github.com/hossainchisty/StoryLink-Server/compare/v0.2.0...v0.3.0) (2023-08-18)
 
 
