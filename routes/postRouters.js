@@ -18,10 +18,7 @@ router.get("/list", getPostsList);
 
 router.route("/").get(getPosts).post(addPost).put(updatePost);
 
-router
-  .route("/:id")
-  .delete(deletePost)
-  .get(getPostByID);
+router.route("/:id").delete(deletePost).get(getPostByID);
 
 // Exporting the Router
 module.exports = router;
