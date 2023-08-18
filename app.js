@@ -36,6 +36,10 @@ app.use(
 app.use("/api/v1/users", require("./routes/userRouters")); // Mounting userRouters for handling user-related routes
 app.use("/api/v1/posts", require("./routes/postRouters")); // Mounting postRouters for handling task-related routes
 
+// Undefined Route Implement
+app.use("/", (req, res) => {
+  res.status(200).json({ status: 200, message: "Health OK🛡" });
+});
 
 // Undefined Route Implement
 app.use("*", (req, res) => {
