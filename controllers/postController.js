@@ -145,7 +145,9 @@ const addPost = asyncHandler(async (req, res) => {
  * @access  Private
  */
 const updatePost = asyncHandler(async (req, res) => {
-  upload(req, res, async (err) => {
+  try {
+    await upload(req, res);
+
     let newPath = null;
     if (req.file) {
       const { originalname, path } = req.file;
@@ -155,56 +157,44 @@ const updatePost = asyncHandler(async (req, res) => {
       fs.renameSync(path, newPath);
     }
 
-    if (err) {
-      return res.status(400).json({
-        status: 400,
-        message: "File upload error",
+    const { id, title, content } = req.body;
+
+    const { token } = req.cookies;
+    const info = jwt.verify(token, process.env.JWT_SECRET);
+
+    const post = await Post.findById(id).lean();
+    if (!post) {
+      return res.status(404).json({
+        status: 404,
+        message: "Post not found",
       });
     }
 
-    try {
-      const { id, title, content } = req.body;
-
-      const { token } = req.cookies;
-      jwt.verify(token, process.env.JWT_SECRET, {}, async (err, info) => {
-        if (err) throw err;
-
-        const post = await Post.findById(id).lean();
-
-        if (!post) {
-          return res.status(404).json({
-            status: 404,
-            message: "Post not found",
-          });
-        }
-        // Make sure the logged-in user matches the post user
-        const isAuthor =
-          JSON.stringify(post.author) === JSON.stringify(info.id);
-        if (!isAuthor) {
-          return res.status(403).json({
-            status: 403,
-            message:
-              "Unauthorized - User does not have permission to update this post",
-          });
-        }
-
-        await Post.updateOne(
-          { _id: id },
-          { title, content, cover: newPath ? newPath : post.cover },
-        );
-        res.status(200).json({
-          status: 200,
-          message: "Post updated successfully",
-        });
-      });
-    } catch (error) {
-      res.status(500).json({
-        status: 500,
-        message: "An error occurred while updating the post",
+    const isAuthor = JSON.stringify(post.author) === JSON.stringify(info.id);
+    if (!isAuthor) {
+      return res.status(403).json({
+        status: 403,
+        message: "Unauthorized - User does not have permission to update this post",
       });
     }
-  });
+
+    await Post.updateOne(
+      { _id: id },
+      { title, content, cover: newPath ? newPath : post.cover }
+    );
+
+    res.status(200).json({
+      status: 200,
+      message: "Post updated successfully",
+    });
+  } catch (error) {
+    res.status(500).json({
+      status: 500,
+      message: "An error occurred while updating the post",
+    });
+  }
 });
+
 
 /**
  * @desc    Delete post
