@@ -1,22 +1,22 @@
 // Basic Lib Imports
 const asyncHandler = require("express-async-handler");
-const jwt = require('jsonwebtoken');
+const jwt = require("jsonwebtoken");
 const User = require("../models/userModel");
 const Post = require("../models/postModel");
-const multer = require('multer');
-const fs = require('fs');
+const multer = require("multer");
+const fs = require("fs");
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, 'uploads/'); 
+    cb(null, "uploads/");
   },
   filename: (req, file, cb) => {
-    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
-    cb(null, file.fieldname + '-' + uniqueSuffix);
+    const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
+    cb(null, file.fieldname + "-" + uniqueSuffix);
   },
 });
 
-const upload = multer({ storage: storage }).single('image'); // Use single() for a single file
+const upload = multer({ storage: storage }).single("image"); // Use single() for a single file
 
 /**
  * @desc  Get posts for a given user request
@@ -45,9 +45,9 @@ const getPosts = asyncHandler(async (req, res) => {
 
 const getPostsList = asyncHandler(async (req, res) => {
   const posts = await Post.find()
-    .populate('author', ['full_name'])
+    .populate("author", ["full_name"])
     .sort({ createdAt: -1 })
-    .limit(20)
+    .limit(20);
   res.status(200).json({
     status: 200,
     data: {
@@ -65,10 +65,8 @@ const getPostsList = asyncHandler(async (req, res) => {
  */
 
 const getPostByID = asyncHandler(async (req, res) => {
-  const {id} = req.params;
-  const post = await Post.findById(id)
-  .populate('author', ['full_name'])
-  .lean();
+  const { id } = req.params;
+  const post = await Post.findById(id).populate("author", ["full_name"]).lean();
 
   if (!post) {
     return res.status(404).json({
@@ -92,31 +90,30 @@ const getPostByID = asyncHandler(async (req, res) => {
  * @returns {object} Newly added post in json format
  */
 
-// TODO: improve the scalability and readability 
+// TODO: improve the scalability and readability
 const addPost = asyncHandler(async (req, res) => {
   upload(req, res, async (err) => {
     const { originalname, path } = req.file;
-    const parts = originalname.split('.');
+    const parts = originalname.split(".");
     const ext = parts[parts.length - 1];
-    const newPath = path+'.'+ ext;
+    const newPath = path + "." + ext;
     fs.renameSync(path, newPath);
 
     if (err) {
       return res.status(400).json({
         status: 400,
-        message: 'File upload error',
+        message: "File upload error",
       });
     }
 
     try {
       const { title, content } = req.body;
 
-
       // Decode token from cookies
       const { token } = req.cookies;
       jwt.verify(token, process.env.JWT_SECRET, {}, async (error, userData) => {
         if (error) {
-          throw new error
+          throw new error();
         }
         const postData = {
           author: userData.id,
@@ -126,18 +123,12 @@ const addPost = asyncHandler(async (req, res) => {
         };
 
         const post = await Post.create(postData);
-        res.status(201).json(
-          {
-            status: 201,
-            data: post,
-            message: "Post created successfully",
-          }
-        );
+        res.status(201).json({
+          status: 201,
+          data: post,
+          message: "Post created successfully",
+        });
       });
-
-
-
-
     } catch (error) {
       res.status(500).json({
         status: 500,
@@ -149,45 +140,70 @@ const addPost = asyncHandler(async (req, res) => {
 
 /**
  * @desc    Update post
- * @route   /api/v1/post/:id
+ * @route   /api/v1/post/
  * @method  PUT
  * @access  Private
  */
 const updatePost = asyncHandler(async (req, res) => {
-  const { id } = req.params;
-  const { id: userId } = req.user;
+  upload(req, res, async (err) => {
+    let newPath = null;
+    if (req.file) {
+      const { originalname, path } = req.file;
+      const parts = originalname.split(".");
+      const ext = parts[parts.length - 1];
+      newPath = path + "." + ext;
+      fs.renameSync(path, newPath);
+    }
 
-  try {
-    const post = await Post.findById(id).lean();
-    if (!post) {
-      return res.status(404).json({
-        status: 404,
-        message: "Post not found",
+    if (err) {
+      return res.status(400).json({
+        status: 400,
+        message: "File upload error",
       });
     }
 
-    // Make sure the logged-in user matches the post user
-    if (post.user.toString() !== userId) {
-      return res.status(403).json({
-        status: 403,
-        message:
-          "Unauthorized - User does not have permission to update this post",
+    try {
+      const { id, title, content } = req.body;
+
+      const { token } = req.cookies;
+      jwt.verify(token, process.env.JWT_SECRET, {}, async (err, info) => {
+        if (err) throw err;
+
+        const post = await Post.findById(id).lean();
+
+        if (!post) {
+          return res.status(404).json({
+            status: 404,
+            message: "Post not found",
+          });
+        }
+        // Make sure the logged-in user matches the post user
+        const isAuthor =
+          JSON.stringify(post.author) === JSON.stringify(info.id);
+        if (!isAuthor) {
+          return res.status(403).json({
+            status: 403,
+            message:
+              "Unauthorized - User does not have permission to update this post",
+          });
+        }
+
+        await Post.updateOne(
+          { _id: id },
+          { title, content, cover: newPath ? newPath : post.cover }
+        );
+        res.status(200).json({
+          status: 200,
+          message: "Post updated successfully",
+        });
+      });
+    } catch (error) {
+      res.status(500).json({
+        status: 500,
+        message: "An error occurred while updating the post",
       });
     }
-
-    await Post.updateOne({ _id: id, user: userId }, req.body);
-    const updatedPost = await Post.findById(id);
-    res.status(200).json({
-      status: 200,
-      message: "Post updated successfully",
-      data: updatedPost,
-    });
-  } catch (error) {
-    res.status(500).json({
-      status: 500,
-      message: "An error occurred while updating the post",
-    });
-  }
+  });
 });
 
 /**

@@ -16,12 +16,11 @@ const { protect } = require("../middleware/authMiddleware");
 // Get all posts
 router.get("/list", getPostsList);
 
-router.route("/").get(getPosts).post(addPost);
+router.route("/").get(getPosts).post(addPost).put(updatePost);
 
 router
   .route("/:id")
   .delete(deletePost)
-  .put(updatePost)
   .get(getPostByID);
 
 // Exporting the Router
