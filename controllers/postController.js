@@ -190,7 +190,7 @@ const updatePost = asyncHandler(async (req, res) => {
 
         await Post.updateOne(
           { _id: id },
-          { title, content, cover: newPath ? newPath : post.cover }
+          { title, content, cover: newPath ? newPath : post.cover },
         );
         res.status(200).json({
           status: 200,
