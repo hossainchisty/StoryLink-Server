@@ -22,7 +22,7 @@ app.use(cookieParser()); // Parsing cookies
 app.use(express.json()); // Parsing JSON bodies
 app.use(cors(
   {
-    origin: "http://localhost:5173",
+    origin: `${process.env.FRONTEND_URL}`,
     credentials: true
   }
 )); // Enabling CORS for localhost origins
