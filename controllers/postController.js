@@ -1,22 +1,8 @@
 // Basic Lib Imports
 const asyncHandler = require("express-async-handler");
-const jwt = require("jsonwebtoken");
-const User = require("../models/userModel");
 const Post = require("../models/postModel");
-const multer = require("multer");
-const fs = require("fs");
-
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, "uploads/");
-  },
-  filename: (req, file, cb) => {
-    const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
-    cb(null, file.fieldname + "-" + uniqueSuffix);
-  },
-});
-
-const upload = multer({ storage: storage }).single("image"); // Use single() for a single file
+const handleFileUpload = require("../utility/fileManager");
+const verifyAuthorization = require("../utility/authorization");
 
 /**
  * @desc  Get posts for a given user request
@@ -90,52 +76,33 @@ const getPostByID = asyncHandler(async (req, res) => {
  * @returns {object} Newly added post in json format
  */
 
-// TODO: improve the scalability and readability
 const addPost = asyncHandler(async (req, res) => {
-  upload(req, res, async (err) => {
-    const { originalname, path } = req.file;
-    const parts = originalname.split(".");
-    const ext = parts[parts.length - 1];
-    const newPath = path + "." + ext;
-    fs.renameSync(path, newPath);
+  try {
+    const newPath = handleFileUpload(req);
+    const { title, content } = req.body;
 
-    if (err) {
-      return res.status(400).json({
-        status: 400,
-        message: "File upload error",
-      });
-    }
+    const { token } = req.cookies;
+    const userData = verifyAuthorization(token);
 
-    try {
-      const { title, content } = req.body;
+    const postData = {
+      author: userData.id,
+      title,
+      content,
+      cover: newPath,
+    };
 
-      // Decode token from cookies
-      const { token } = req.cookies;
-      jwt.verify(token, process.env.JWT_SECRET, {}, async (error, userData) => {
-        if (error) {
-          throw new error();
-        }
-        const postData = {
-          author: userData.id,
-          title,
-          content,
-          cover: newPath,
-        };
-
-        const post = await Post.create(postData);
-        res.status(201).json({
-          status: 201,
-          data: post,
-          message: "Post created successfully",
-        });
-      });
-    } catch (error) {
-      res.status(500).json({
-        status: 500,
-        message: error.message,
-      });
-    }
-  });
+    const post = await Post.create(postData);
+    res.status(201).json({
+      status: 201,
+      data: post,
+      message: "Post created successfully",
+    });
+  } catch (error) {
+    res.status(500).json({
+      status: 500,
+      message: error.message,
+    });
+  }
 });
 
 /**
@@ -146,21 +113,14 @@ const addPost = asyncHandler(async (req, res) => {
  */
 const updatePost = asyncHandler(async (req, res) => {
   try {
-    await upload(req, res);
-
     let newPath = null;
     if (req.file) {
-      const { originalname, path } = req.file;
-      const parts = originalname.split(".");
-      const ext = parts[parts.length - 1];
-      newPath = path + "." + ext;
-      fs.renameSync(path, newPath);
+      newPath = handleFileUpload(req);
     }
 
     const { id, title, content } = req.body;
-
     const { token } = req.cookies;
-    const info = jwt.verify(token, process.env.JWT_SECRET);
+    const info = verifyAuthorization(token);
 
     const post = await Post.findById(id).lean();
     if (!post) {
@@ -194,7 +154,6 @@ const updatePost = asyncHandler(async (req, res) => {
     });
   }
 });
-
 
 /**
  * @desc    Delete post
