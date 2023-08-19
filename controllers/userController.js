@@ -129,12 +129,19 @@ const loginUser = asyncHandler(async (req, res) => {
   if (user && (await bcrypt.compare(password, user.password))) {
     // Generate and set the token as a cookie
     const token = generateToken(user._id, user.full_name);
-    res.status(200).cookie("token", token).json({
-      id: user._id,
-      full_name: user.full_name,
-      status: 200,
-      message: "Logged in successfully",
-    });
+    res
+      .cookie("token", token, {
+        sameSite: "none",
+        secure: true,
+        httpOnly: true,
+      })
+      .json({
+        status: 200,
+        id: user._id,
+        full_name: user.full_name,
+        token: token,
+        message: "Logged in successfully",
+      });
   } else {
     res.status(400).json({
       status: 400,
