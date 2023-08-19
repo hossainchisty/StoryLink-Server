@@ -134,13 +134,14 @@ const updatePost = asyncHandler(async (req, res) => {
     if (!isAuthor) {
       return res.status(403).json({
         status: 403,
-        message: "Unauthorized - User does not have permission to update this post",
+        message:
+          "Unauthorized - User does not have permission to update this post",
       });
     }
 
     await Post.updateOne(
       { _id: id },
-      { title, content, cover: newPath ? newPath : post.cover }
+      { title, content, cover: newPath ? newPath : post.cover },
     );
 
     res.status(200).json({
