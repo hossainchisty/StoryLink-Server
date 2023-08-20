@@ -6,6 +6,7 @@ const { generateToken } = require("../helper/generateToken");
 const randomString = require("randomstring");
 const { sendResetPasswordEmail } = require("../helper/sendEmail");
 const jwt = require("jsonwebtoken");
+const verifyAuthorization = require("../utility/verifyAuthorization");
 
 /**
  * @desc    Register new user
@@ -177,10 +178,16 @@ const logoutUser = asyncHandler(async (req, res) => {
 
 const getMe = asyncHandler(async (req, res) => {
   const { token } = req.cookies;
-  jwt.verify(token, process.env.JWT_SECRET, {}, (err, info) => {
-    if (err) throw err;
+  try {
+    const info = verifyAuthorization(token);
     res.json(info);
-  });
+  } catch (error) {
+    res.status(401).json({
+      status: error.status,
+      error: error.message,
+      message: 'Authorization failed' 
+    })
+  }
 });
 
 /**
