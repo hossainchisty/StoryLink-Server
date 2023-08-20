@@ -1,3 +1,13 @@
+## [1.3.1](https://github.com/hossainchisty/StoryLink-Server/compare/v0.3.0...v1.3.1) (2023-08-20)
+
+
+### Bug Fixes
+
+* Resolve SameSite Cookie Error for Cross-Site Authentication ([63c7d3e](https://github.com/hossainchisty/StoryLink-Server/commit/63c7d3e21ce46829dc23679b96f4f381aedb59b1))
+* Unhandled Promise Rejection in Update Post Route ([272e5b7](https://github.com/hossainchisty/StoryLink-Server/commit/272e5b7e88b7284f2afd7757fec9b52f30993ffa))
+
+
+
 # [0.3.0](https://github.com/hossainchisty/StoryLink-Server/compare/v0.2.0...v0.3.0) (2023-08-18)
 
 
