@@ -2,7 +2,7 @@
 const asyncHandler = require("express-async-handler");
 const Post = require("../models/postModel");
 const handleFileUpload = require("../utility/fileManager");
-const verifyAuthorization = require("../utility/authorization");
+const verifyAuthorization = require("../utility/verifyAuthorization");
 
 /**
  * @desc  Get posts for a given user request
