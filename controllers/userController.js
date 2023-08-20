@@ -185,8 +185,8 @@ const getMe = asyncHandler(async (req, res) => {
     res.status(401).json({
       status: error.status,
       error: error.message,
-      message: 'Authorization failed' 
-    })
+      message: "Authorization failed",
+    });
   }
 });
 
