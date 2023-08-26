@@ -30,17 +30,35 @@ const getPosts = asyncHandler(async (req, res) => {
  */
 
 const getPostsList = asyncHandler(async (req, res) => {
+  const page = parseInt(req.query.page) || 1; // Get the requested page number from query string
+  const itemsPerPage = 6; // Number of items to show per page
+
+  const totalPosts = await Post.countDocuments(); // Total number of posts
+
   const posts = await Post.find()
     .populate("author", ["full_name"])
     .sort({ createdAt: -1 })
-    .limit(20);
+    .skip((page - 1) * itemsPerPage) // Calculate the number of posts to skip
+    .limit(itemsPerPage); // Limit the number of posts to retrieve
+
+  const totalPages = Math.ceil(totalPosts / itemsPerPage);
+  
+  const nextPage = page < totalPages ? page + 1 : null; // Calculate the next page number
+  const prevPage = page > 1 ? page - 1 : null; // Calculate the previous page number
+
   res.status(200).json({
     status: 200,
     data: {
       posts,
+      currentPage: page,
+      totalPages,
+      nextPage,
+      prevPage,
     },
   });
 });
+
+
 
 /**
  * @desc    Get a post
