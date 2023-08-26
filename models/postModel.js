@@ -24,7 +24,7 @@ const postSchema = mongoose.Schema(
       type: String,
       required: true,
     },
-    views: { type: BigInt },
+    views: { type: Number },
     isDraft: { type: Boolean, default: false, index: true },
     notifications: { type: Boolean, default: true },
   },
