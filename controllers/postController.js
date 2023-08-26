@@ -42,7 +42,7 @@ const getPostsList = asyncHandler(async (req, res) => {
     .limit(itemsPerPage); // Limit the number of posts to retrieve
 
   const totalPages = Math.ceil(totalPosts / itemsPerPage);
-  
+
   const nextPage = page < totalPages ? page + 1 : null; // Calculate the next page number
   const prevPage = page > 1 ? page - 1 : null; // Calculate the previous page number
 
@@ -57,8 +57,6 @@ const getPostsList = asyncHandler(async (req, res) => {
     },
   });
 });
-
-
 
 /**
  * @desc    Get a post
@@ -75,8 +73,10 @@ const getPostByID = asyncHandler(async (req, res) => {
     const post = await Post.findByIdAndUpdate(
       id,
       { $inc: { views: 1 } }, // Increment views by 1
-      { new: true } // Return the updated document
-    ).populate("author", ["full_name"]).lean();
+      { new: true }, // Return the updated document
+    )
+      .populate("author", ["full_name"])
+      .lean();
 
     if (!post) {
       return res.status(404).json({
@@ -98,8 +98,6 @@ const getPostByID = asyncHandler(async (req, res) => {
     });
   }
 });
-
-
 
 /**
  * @desc    Create a new post for the authenticated user
