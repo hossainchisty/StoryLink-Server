@@ -1,3 +1,17 @@
+# [1.5.0](https://github.com/hossainchisty/StoryLink-Server/compare/v1.4.0...v1.5.0) (2023-08-26)
+
+
+### Bug Fixes
+
+* Added number type in views field ([63ee8e1](https://github.com/hossainchisty/StoryLink-Server/commit/63ee8e191c71c72fb54fd823e176c22a18a91070))
+
+
+### Features
+
+* Added post views counters ([f7b5775](https://github.com/hossainchisty/StoryLink-Server/commit/f7b5775f9d9fd13c5e27701b33be68356be09178))
+
+
+
 # [1.4.0](https://github.com/hossainchisty/StoryLink-Server/compare/v1.3.1...v1.4.0) (2023-08-26)
 
 
