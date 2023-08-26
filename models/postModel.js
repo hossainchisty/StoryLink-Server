@@ -24,11 +24,12 @@ const postSchema = mongoose.Schema(
       type: String,
       required: true,
     },
+    views: { type: BigInt },
     isDraft: { type: Boolean, default: false, index: true },
     notifications: { type: Boolean, default: true },
   },
   { timestamps: true },
-  { versionKey: false },
+  { versionKey: false }
 );
 
 module.exports = mongoose.model("Post", postSchema);

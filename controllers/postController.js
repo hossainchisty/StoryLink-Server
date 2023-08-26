@@ -70,21 +70,36 @@ const getPostsList = asyncHandler(async (req, res) => {
 
 const getPostByID = asyncHandler(async (req, res) => {
   const { id } = req.params;
-  const post = await Post.findById(id).populate("author", ["full_name"]).lean();
 
-  if (!post) {
-    return res.status(404).json({
-      status: 404,
-      error: "Not Found",
-      message: "Post not found.",
+  try {
+    const post = await Post.findByIdAndUpdate(
+      id,
+      { $inc: { views: 1 } }, // Increment views by 1
+      { new: true } // Return the updated document
+    ).populate("author", ["full_name"]).lean();
+
+    if (!post) {
+      return res.status(404).json({
+        status: 404,
+        error: "Not Found",
+        message: "Post not found.",
+      });
+    }
+
+    return res.status(200).json({
+      status: 200,
+      data: post,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      status: 500,
+      error: "Internal Server Error",
+      message: "An error occurred while fetching the post.",
     });
   }
-
-  return res.status(200).json({
-    status: 200,
-    data: post,
-  });
 });
+
+
 
 /**
  * @desc    Create a new post for the authenticated user
