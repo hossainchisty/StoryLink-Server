@@ -10,6 +10,7 @@ const {
   addPost,
   updatePost,
   deletePost,
+  searchPost,
 } = require("../controllers/postController");
 
 const storage = multer.diskStorage({
@@ -26,6 +27,8 @@ const uploadMiddleware = multer({ storage: storage }).single("image");
 
 // Get all posts
 router.get("/list", getPostsList);
+// Search for posts with the given title
+router.get("/search", searchPost);
 
 router
   .route("/")
