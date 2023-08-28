@@ -34,7 +34,7 @@ const getMostRecentPost = asyncHandler(async (req, res) => {
 
   const info = verifyAuthorization(token);
 
-  const mostRecentPosts = await Post.find({ author: info._id })
+  const mostRecentPosts = await Post.find({ author: info.id })
     .sort({ createdAt: -1 })
     .limit(3);
 
