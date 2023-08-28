@@ -23,6 +23,28 @@ const getPosts = asyncHandler(async (req, res) => {
 });
 
 /**
+ * @desc  Get most recent posts
+ * @route   /api/v1/post/me/recent
+ * @method  GET
+ * @access  Private
+ */
+
+const getMostRecentPost = asyncHandler(async (req, res) => {
+  const { token } = req.cookies;
+
+  const info = verifyAuthorization(token);
+
+  const mostRecentPosts = await Post.find({ user: info._id })
+    .sort({ createdAt: -1 })
+    .limit(3);
+
+  res.status(200).json({
+    status: 200,
+    data: {mostRecentPosts},
+});
+});
+
+/**
  * @desc  Get list of posts
  * @route   /api/v1/post/lists
  * @method  GET
@@ -73,7 +95,7 @@ const getPostByID = asyncHandler(async (req, res) => {
     const post = await Post.findByIdAndUpdate(
       id,
       { $inc: { views: 1 } }, // Increment views by 1
-      { new: true }, // Return the updated document
+      { new: true } // Return the updated document
     )
       .populate("author", ["full_name"])
       .lean();
@@ -172,7 +194,7 @@ const updatePost = asyncHandler(async (req, res) => {
 
     await Post.updateOne(
       { _id: id },
-      { title, content, cover: newPath ? newPath : post.cover },
+      { title, content, cover: newPath ? newPath : post.cover }
     );
 
     res.status(200).json({
@@ -284,4 +306,5 @@ module.exports = {
   updatePost,
   deletePost,
   searchPost,
+  getMostRecentPost,
 };
