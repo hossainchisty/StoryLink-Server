@@ -1,3 +1,17 @@
+# [1.7.0](https://github.com/hossainchisty/StoryLink-Server/compare/v1.6.0...v1.7.0) (2023-08-28)
+
+
+### Bug Fixes
+
+* we change user to author ([c689244](https://github.com/hossainchisty/StoryLink-Server/commit/c689244b1ca16f75c5f725bf1421c61cc16a875a))
+
+
+### Features
+
+* Added most react article feature ([f8cdfcf](https://github.com/hossainchisty/StoryLink-Server/commit/f8cdfcfae7b0a5d950624d4293f412bac7492ae7))
+
+
+
 # [1.6.0](https://github.com/hossainchisty/StoryLink-Server/compare/v1.5.0...v1.6.0) (2023-08-27)
 
 
@@ -37,16 +51,6 @@
 
 * Resolve SameSite Cookie Error for Cross-Site Authentication ([63c7d3e](https://github.com/hossainchisty/StoryLink-Server/commit/63c7d3e21ce46829dc23679b96f4f381aedb59b1))
 * Unhandled Promise Rejection in Update Post Route ([272e5b7](https://github.com/hossainchisty/StoryLink-Server/commit/272e5b7e88b7284f2afd7757fec9b52f30993ffa))
-
-
-
-# [0.3.0](https://github.com/hossainchisty/StoryLink-Server/compare/v0.2.0...v0.3.0) (2023-08-18)
-
-
-### Features
-
-* Added root API for health check ([8104310](https://github.com/hossainchisty/StoryLink-Server/commit/81043106dc9115bdffc5d2f35125d4c09223c3a2))
-* Added update post functionality ([e5aba0e](https://github.com/hossainchisty/StoryLink-Server/commit/e5aba0e3bb95e9885999f643f9ebf586a080a30a))
 
 
 
