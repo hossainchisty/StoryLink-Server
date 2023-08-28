@@ -31,7 +31,7 @@ const getPosts = asyncHandler(async (req, res) => {
 
 const getPostsList = asyncHandler(async (req, res) => {
   const page = parseInt(req.query.page) || 1; // Get the requested page number from query string
-  const itemsPerPage = 6; // Number of items to show per page
+  const itemsPerPage = 3; // Number of items to show per page
 
   const totalPosts = await Post.countDocuments(); // Total number of posts
 
