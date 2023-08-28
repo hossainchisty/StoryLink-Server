@@ -1,3 +1,12 @@
+## [1.7.1](https://github.com/hossainchisty/StoryLink-Server/compare/v1.7.0...v1.7.1) (2023-08-28)
+
+
+### Bug Fixes
+
+* Fix type to find author id ([50e76c5](https://github.com/hossainchisty/StoryLink-Server/commit/50e76c57feccd45685bacb8b44a95a751ee37ce0))
+
+
+
 # [1.7.0](https://github.com/hossainchisty/StoryLink-Server/compare/v1.6.0...v1.7.0) (2023-08-28)
 
 
@@ -41,16 +50,6 @@
 ### Features
 
 * Added post pagination ([bd809b2](https://github.com/hossainchisty/StoryLink-Server/commit/bd809b2e1c0ec815e2c17371db6c7e7b414262a5))
-
-
-
-## [1.3.1](https://github.com/hossainchisty/StoryLink-Server/compare/v0.3.0...v1.3.1) (2023-08-20)
-
-
-### Bug Fixes
-
-* Resolve SameSite Cookie Error for Cross-Site Authentication ([63c7d3e](https://github.com/hossainchisty/StoryLink-Server/commit/63c7d3e21ce46829dc23679b96f4f381aedb59b1))
-* Unhandled Promise Rejection in Update Post Route ([272e5b7](https://github.com/hossainchisty/StoryLink-Server/commit/272e5b7e88b7284f2afd7757fec9b52f30993ffa))
 
 
 
