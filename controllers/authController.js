@@ -128,6 +128,7 @@ const loginUser = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
   // Check for user email
   const user = await User.findOne({ email });
+
   if (!user) {
     res.status(404).json({
       status: 404,
@@ -135,6 +136,15 @@ const loginUser = asyncHandler(async (req, res) => {
       message: "User not found",
     });
   }
+
+  if (!user.isVerified) {
+    return res.status(403).json({
+      status: 403,
+      error: "Forbidden",
+      message: "User not verified",
+    });
+  }
+  
   if (user && (await bcrypt.compare(password, user.password))) {
     // Generate and set the token as a cookie
     const token = generateToken(user._id, user.full_name);
