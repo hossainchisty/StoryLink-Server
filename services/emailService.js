@@ -58,4 +58,3 @@ const sendResetPasswordLink = async (email, resetPasswordLink) => {
 };
 
 module.exports = { sendVerificationEmail, sendResetPasswordLink };
-

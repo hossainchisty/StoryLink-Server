@@ -40,8 +40,8 @@ const getMostRecentPost = asyncHandler(async (req, res) => {
 
   res.status(200).json({
     status: 200,
-    data: {mostRecentPosts},
-});
+    data: { mostRecentPosts },
+  });
 });
 
 /**
@@ -95,7 +95,7 @@ const getPostByID = asyncHandler(async (req, res) => {
     const post = await Post.findByIdAndUpdate(
       id,
       { $inc: { views: 1 } }, // Increment views by 1
-      { new: true } // Return the updated document
+      { new: true }, // Return the updated document
     )
       .populate("author", ["full_name"])
       .lean();
@@ -194,7 +194,7 @@ const updatePost = asyncHandler(async (req, res) => {
 
     await Post.updateOne(
       { _id: id },
-      { title, content, cover: newPath ? newPath : post.cover }
+      { title, content, cover: newPath ? newPath : post.cover },
     );
 
     res.status(200).json({

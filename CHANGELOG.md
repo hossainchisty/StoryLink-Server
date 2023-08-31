@@ -1,3 +1,17 @@
+# [1.8.0](https://github.com/hossainchisty/StoryLink-Server/compare/v1.7.1...v1.8.0) (2023-08-31)
+
+
+### Bug Fixes
+
+* eage case to check user verfication ([782d6e2](https://github.com/hossainchisty/StoryLink-Server/commit/782d6e2c924d7dd8669e2d4d81c07fa4325100b9))
+
+
+### Features
+
+* Added email verfication ([75eed91](https://github.com/hossainchisty/StoryLink-Server/commit/75eed91ea49d2c3be0b62bc18a4090fd0b782317))
+
+
+
 ## [1.7.1](https://github.com/hossainchisty/StoryLink-Server/compare/v1.7.0...v1.7.1) (2023-08-28)
 
 
@@ -41,15 +55,6 @@
 ### Features
 
 * Added post views counters ([f7b5775](https://github.com/hossainchisty/StoryLink-Server/commit/f7b5775f9d9fd13c5e27701b33be68356be09178))
-
-
-
-# [1.4.0](https://github.com/hossainchisty/StoryLink-Server/compare/v1.3.1...v1.4.0) (2023-08-26)
-
-
-### Features
-
-* Added post pagination ([bd809b2](https://github.com/hossainchisty/StoryLink-Server/commit/bd809b2e1c0ec815e2c17371db6c7e7b414262a5))
 
 
 

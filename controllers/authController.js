@@ -93,7 +93,7 @@ const registerUser = asyncHandler(async (req, res) => {
     if (createdUser) {
       // Send verification email
       const verificationLink = `${req.protocol}://${req.get(
-        "host"
+        "host",
       )}/api/v1/users/verify?token=${createdUser.verificationToken}`;
       sendVerificationEmail(createdUser.email, verificationLink);
 
@@ -144,7 +144,7 @@ const loginUser = asyncHandler(async (req, res) => {
       message: "User not verified",
     });
   }
-  
+
   if (user && (await bcrypt.compare(password, user.password))) {
     // Generate and set the token as a cookie
     const token = generateToken(user._id, user.full_name);
@@ -260,12 +260,12 @@ const forgetPassword = async (req, res) => {
           resetPasswordToken,
           resetPasswordExpiry,
         },
-      }
+      },
     );
 
     // Send password reset email
     const passwordRestLink = `${req.protocol}://${req.get(
-      "host"
+      "host",
     )}/api/v1/users/reset-password?token=${resetPasswordToken}`;
     sendResetPasswordLink(user.email, passwordRestLink);
 
