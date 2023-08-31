@@ -22,11 +22,12 @@ const {
   emailVerify,
 } = require("../controllers/authController");
 
-const { getMe } = require("../controllers/userController");
+const { getMe, userList } = require("../controllers/userController");
 
 const { protect } = require("../middleware/authMiddleware");
 
 // Routing Implement
+router.get("/list", userList);
 router.post("/register", createAccountLimiter, registerUser);
 router.post("/verify", emailVerify);
 router.post("/login", bruteforce.prevent, loginUser);

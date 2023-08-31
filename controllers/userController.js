@@ -1,4 +1,5 @@
 // Basic Lib Import
+const User = require("../models/userModel");
 const asyncHandler = require("express-async-handler");
 const verifyAuthorization = require("../utility/verifyAuthorization");
 
@@ -23,6 +24,28 @@ const getMe = asyncHandler(async (req, res) => {
   }
 });
 
+/**
+ * @desc    Get all user data
+ * @route   /api/v1/users/list
+ * @method  GET
+ * @access  Private
+ */
+
+const userList = asyncHandler(async (req, res) => {
+  try {
+    const users = await User.find(); 
+    res.status(200).json(users);
+  } catch (error) {
+    res.status(500).json({
+      status: 500,
+      error: error.message,
+      message: "Internal Server Error",
+    });
+  }
+});
+
+
 module.exports = {
   getMe,
+  userList,
 };
