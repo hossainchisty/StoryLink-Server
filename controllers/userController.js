@@ -10,19 +10,19 @@ const verifyAuthorization = require("../utility/verifyAuthorization");
  */
 
 const getMe = asyncHandler(async (req, res) => {
-    const { token } = req.cookies;
-    try {
-      const info = verifyAuthorization(token);
-      res.json(info);
-    } catch (error) {
-      res.status(401).json({
-        status: error.status,
-        error: error.message,
-        message: "Authorization failed",
-      });
-    }
-  });
+  const { token } = req.cookies;
+  try {
+    const info = verifyAuthorization(token);
+    res.json(info);
+  } catch (error) {
+    res.status(401).json({
+      status: error.status,
+      error: error.message,
+      message: "Authorization failed",
+    });
+  }
+});
 
 module.exports = {
-    getMe
-}
+  getMe,
+};

@@ -48,7 +48,7 @@ const userSchema = mongoose.Schema(
       type: Date,
       required: false,
     },
-    hasEarnedFirstPostBadge: { type: Boolean, default: false }
+    hasEarnedFirstPostBadge: { type: Boolean, default: false },
   },
   { timestamps: true },
   { versionKey: false },

@@ -20,6 +20,6 @@ const forgetPasswordLimiter = rateLimit({
 });
 
 module.exports = {
-    createAccountLimiter,
-    forgetPasswordLimiter
-}
+  createAccountLimiter,
+  forgetPasswordLimiter,
+};

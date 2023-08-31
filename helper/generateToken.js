@@ -11,7 +11,6 @@ const generateToken = (id) => {
   });
 };
 
-
 /**
  * @desc Generate reset password token and set expiry time
  *
