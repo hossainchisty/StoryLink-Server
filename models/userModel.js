@@ -16,16 +16,39 @@ const userSchema = mongoose.Schema(
       type: String,
       required: false,
     },
+    bio: {
+      type: String,
+      required: false,
+    },
     password: {
       type: String,
       required: [true, "Please add a password"],
-      // min: 4,
-      // max: 16
     },
-    token: {
+    isVerified: {
+      type: Boolean,
+      required: false,
+    },
+    otp: {
       type: String,
-      default: "",
+      required: false,
     },
+    verificationToken: {
+      type: String,
+      required: false,
+    },
+    verificationTokenExpiry: {
+      type: Date,
+      required: false,
+    },
+    resetPasswordToken: {
+      type: String,
+      required: false,
+    },
+    resetPasswordExpiry: {
+      type: Date,
+      required: false,
+    },
+    hasEarnedFirstPostBadge: { type: Boolean, default: false }
   },
   { timestamps: true },
   { versionKey: false },
