@@ -2,7 +2,7 @@
 const mongoose = require("mongoose");
 
 /*
-  Post Schema Definition
+  Posts Schema Definition
   
 */
 
@@ -25,6 +25,7 @@ const postSchema = mongoose.Schema(
       required: true,
     },
     views: { type: Number },
+    readtime: { type: String },
     isDraft: { type: Boolean, default: false, index: true },
     notifications: { type: Boolean, default: true },
   },
