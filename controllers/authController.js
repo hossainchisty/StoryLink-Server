@@ -1,4 +1,5 @@
 // Basic Lib Import
+require("dotenv").config();
 const moment = require("moment");
 const bcrypt = require("bcryptjs");
 const crypto = require("crypto");
@@ -92,9 +93,8 @@ const registerUser = asyncHandler(async (req, res) => {
 
     if (createdUser) {
       // Send verification email
-      const verificationLink = `${req.protocol}://${req.get(
-        "host",
-      )}/api/v1/users/verify?token=${createdUser.verificationToken}`;
+      const domain = process.env.FRONTEND_URL;
+      const verificationLink = `${domain}/verify/${createdUser.verificationToken}`;
       sendVerificationEmail(createdUser.email, verificationLink);
 
       res.status(201).json({
@@ -181,7 +181,7 @@ const loginUser = asyncHandler(async (req, res) => {
 
 const logoutUser = asyncHandler(async (req, res) => {
   // Update the user's token to invalidate it
-  res.cookie("token", null).res.status(200).json({
+  res.cookie("token", null).json({
     status: 200,
     message: "Logged out successfully",
   });
@@ -260,13 +260,12 @@ const forgetPassword = async (req, res) => {
           resetPasswordToken,
           resetPasswordExpiry,
         },
-      },
+      }
     );
 
     // Send password reset email
-    const passwordRestLink = `${req.protocol}://${req.get(
-      "host",
-    )}/api/v1/users/reset-password?token=${resetPasswordToken}`;
+    const domain = process.env.FRONTEND_URL;
+    const passwordRestLink = `${domain}/api/v1/users/reset-password?token=${resetPasswordToken}`;
     sendResetPasswordLink(user.email, passwordRestLink);
 
     res.status(200).json({
