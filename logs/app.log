@@ -1,0 +1,12 @@
+{"level":"info","message":"Verification email sent:","response":"250 2.0.0 OK  1693473289 fk22-20020a056a003a9600b006875a366acfsm904904pfb.8 - gsmtp","timestamp":"2023-08-31T09:14:51.294Z"}
+{"level":"info","message":"Verification email sent:","response":"250 2.0.0 OK  1693490376 u17-20020aa78391000000b0068a3f861b24sm1347501pfm.195 - gsmtp","timestamp":"2023-08-31T13:59:38.334Z"}
+{"level":"info","message":"Verification email sent:","response":"250 2.0.0 OK  1693490843 e5-20020a63ee05000000b0055386b1415dsm347017pgi.51 - gsmtp","timestamp":"2023-08-31T14:07:25.244Z"}
+{"level":"info","message":"Verification email sent:","response":"250 2.0.0 OK  1693494676 p11-20020a17090adf8b00b002696bd123e4sm1439655pjv.46 - gsmtp","timestamp":"2023-08-31T15:11:17.474Z"}
+{"level":"info","message":"Verification email sent:","response":"250 2.0.0 OK  1693494855 t11-20020a170902a5cb00b001bc59cd718asm1365564plq.278 - gsmtp","timestamp":"2023-08-31T15:14:16.481Z"}
+{"level":"info","message":"Verification email sent:","response":"250 2.0.0 OK  1693501409 x26-20020aa784da000000b0064d57ecaa1dsm1536406pfn.28 - gsmtp","timestamp":"2023-08-31T17:03:31.879Z"}
+{"level":"info","message":"Verification email sent:","response":"250 2.0.0 OK  1693501832 20-20020a17090a195400b0026b55e28035sm3401008pjh.52 - gsmtp","timestamp":"2023-08-31T17:10:34.823Z"}
+{"level":"info","message":"Verification email sent:","response":"250 2.0.0 OK  1693502217 d10-20020a170902654a00b001b8b2b95068sm1516758pln.204 - gsmtp","timestamp":"2023-08-31T17:16:59.403Z"}
+{"level":"info","message":"Verification email sent:","response":"250 2.0.0 OK  1693502382 y11-20020a1709027c8b00b00198d7b52eefsm1483191pll.257 - gsmtp","timestamp":"2023-08-31T17:19:44.280Z"}
+{"level":"info","message":"Verification email sent:","response":"250 2.0.0 OK  1693502414 l19-20020a17090aec1300b0026b26181ac9sm3158272pjy.14 - gsmtp","timestamp":"2023-08-31T17:20:16.972Z"}
+{"level":"info","message":"Verification email sent:","response":"250 2.0.0 OK  1693503310 e4-20020a170902d38400b001adf6b21c77sm1508101pld.107 - gsmtp","timestamp":"2023-08-31T17:35:12.345Z"}
+{"level":"info","message":"Verification email sent:","response":"250 2.0.0 OK  1693503929 x4-20020a636304000000b00570668ccd5bsm74965pgb.14 - gsmtp","timestamp":"2023-08-31T17:45:31.227Z"}
